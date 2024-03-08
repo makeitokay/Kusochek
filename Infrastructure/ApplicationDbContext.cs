@@ -9,7 +9,15 @@ namespace Infrastructure;
 public class ApplicationDbContext : DbContext
 {
 	public DbSet<Customer> Users => Set<Customer>();
-	public DbSet<KusochekAdmin> KusochekAdmins => Set<KusochekAdmin>();
+	public DbSet<MediaFile> MediaFiles => Set<MediaFile>();
+	public DbSet<Product> Products => Set<Product>();
+
+	public DbSet<Order> Orders => Set<Order>();
+
+	public DbSet<Review> Reviews => Set<Review>();
+
+	public DbSet<Story> Stories => Set<Story>();
+
 
 	public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
 	{
@@ -21,7 +29,17 @@ public class ApplicationDbContext : DbContext
 			.Entity<Customer>()
 			.HasIndex(u => new { u.Email })
 			.IsUnique();
+		
+		modelBuilder.Entity<MediaFile>()
+			.HasDiscriminator<string>("Discriminator")
+			.HasValue<Image>("Image")
+			.HasValue<Video>("Video");
 
+		modelBuilder.Entity<Product>()
+			.HasMany(p => p.Images)
+			.WithMany(i => i.Products)
+			.UsingEntity(builder => builder.ToTable("ProductImages"));
+		
 		foreach (var entityType in modelBuilder.Model.GetEntityTypes())
 		{
 			foreach (var property in entityType.GetProperties())
