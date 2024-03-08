@@ -3,6 +3,6 @@
 namespace Domain.Entities;
 
 [Table("Customers")]
-public sealed class Customer : BaseUser
+public class Customer : BaseUser
 {
 }
