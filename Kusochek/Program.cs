@@ -46,6 +46,7 @@ var connectionString = builder.Configuration.GetConnectionString("Default");
 services.AddDbContext(connectionString);
 
 services.AddRepositories();
+services.AddSingleton<IPasswordManager, PasswordManager>();
 
 var app = builder.Build();
 

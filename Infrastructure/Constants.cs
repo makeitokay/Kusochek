@@ -7,4 +7,9 @@ public static class Constants
 		public const string Issuer = "Kusochek";
 		public const string Audience = "Kusochek.client";
 	}
+	
+	public static class KusochekClaimTypes
+	{
+		public const string UserId = "UserID";
+	}
 }

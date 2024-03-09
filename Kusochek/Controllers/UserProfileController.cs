@@ -1,7 +1,7 @@
 ﻿using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Kusochek;
+namespace Kusochek.Controllers;
 
 [Route("profile")]
 public class UserProfileController : ControllerBase
