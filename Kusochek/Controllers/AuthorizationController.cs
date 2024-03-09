@@ -2,8 +2,10 @@
 using System.Security.Claims;
 using System.Text;
 using DigitalDiary.Controllers.Dto.Authorization;
+using Domain.Entities;
 using Infrastructure;
 using Infrastructure.Repositories;
+using Kusochek.Controllers.Dto.Users;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
@@ -31,6 +33,36 @@ public class AuthorizationController : ControllerBase
 			return Unauthorized("Неверный логин или пароль");
 		}
 
+		return new LoginResponseDto { AccessToken = GetJwtForUser(user) };
+	}
+
+	[HttpPost("signup")]
+	public async Task<ActionResult<LoginResponseDto>> SignupAsync([FromBody] SignupDto userDto)
+	{
+		var user = await _userRepository.TryGetByEmailAsync(userDto.Email);
+
+		if (user is not null)
+			return BadRequest("Пользователь с таким EMAIL уже существует!");
+
+		var passwordHash = _passwordManager.GetPasswordHash(userDto.Password, out var salt);
+
+		user = new User
+		{
+			Email = userDto.Email,
+			FirstName = userDto.FirstName,
+			LastName = userDto.LastName,
+			MobilePhone = userDto.MobilePhone,
+			PasswordHash = passwordHash,
+			PasswordSalt = salt
+		};
+
+		await _userRepository.CreateAsync(user);
+
+		return new LoginResponseDto { AccessToken = GetJwtForUser(user) };
+	}
+
+	private static string GetJwtForUser(User user)
+	{
 		var userClaims = new List<Claim>
 		{
 			new(ClaimTypes.Email, user.Email),
@@ -46,6 +78,6 @@ public class AuthorizationController : ControllerBase
 				new SymmetricSecurityKey(Encoding.UTF8.GetBytes("KusochekBakeryMoscowUltraSecretKey2024")),
 				SecurityAlgorithms.HmacSha256));
 
-		return new LoginResponseDto { AccessToken = new JwtSecurityTokenHandler().WriteToken(jwt) };
+		return new JwtSecurityTokenHandler().WriteToken(jwt);
 	}
 }

@@ -35,7 +35,7 @@ services
 			ValidateAudience = true,
 			ValidAudience = Constants.Authentication.Audience,
 			ValidateLifetime = true,
-			IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("DigitalDiarySecretKey2023")),
+			IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("KusochekBakeryMoscowUltraSecretKey2024")),
 			ValidateIssuerSigningKey = true
 		};
 	});
