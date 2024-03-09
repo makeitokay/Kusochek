@@ -6,11 +6,11 @@ namespace Kusochek;
 [Route("profile")]
 public class UserProfileController : ControllerBase
 {
-	private readonly ICustomerRepository _customerRepository;
+	private readonly IUserRepository _userRepository;
 
-	public UserProfileController(ICustomerRepository customerRepository)
+	public UserProfileController(IUserRepository userRepository)
 	{
-		_customerRepository = customerRepository;
+		_userRepository = userRepository;
 	}
 
 	[HttpGet]

@@ -13,7 +13,7 @@ public class Order : BaseEntity
 	[Column("CreationDateTimeUtc")]
 	public DateTimeOffset CreationDateTimeUtc { get; set; }
 	
-	public virtual Customer Customer { get; set; }
+	public virtual User User { get; set; }
 	
 	[Column("CustomerId")]
 	public int CustomerId { get; set; }

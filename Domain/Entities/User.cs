@@ -2,7 +2,8 @@
 
 namespace Domain.Entities;
 
-public class BaseUser : BaseEntity
+[Table("Users")]
+public class User : BaseEntity
 {
 	[Column("FirstName")]
 	public string FirstName { get; set; } = default!;
@@ -18,4 +19,17 @@ public class BaseUser : BaseEntity
 
 	[Column("PasswordSalt")]
 	public byte[] PasswordSalt { get; set; } = default!;
+
+	[Column("MobilePhone")]
+	public string MobilePhone { get; set; } = default!;
+	
+	public virtual ICollection<ProductItem> CartItems { get; set; }
+	
+	public virtual Image? ProfilePicture { get; set; }
+	
+	[Column("ProfilePictureId")]
+	public int? ProfilePictureId { get; set; }
+	
+	[Column("IsAdmin")]
+	public bool IsAdmin { get; set; }
 }

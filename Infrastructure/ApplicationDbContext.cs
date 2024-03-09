@@ -8,7 +8,7 @@ namespace Infrastructure;
 
 public class ApplicationDbContext : DbContext
 {
-	public DbSet<Customer> Users => Set<Customer>();
+	public DbSet<User> Users => Set<User>();
 	public DbSet<MediaFile> MediaFiles => Set<MediaFile>();
 	public DbSet<Product> Products => Set<Product>();
 
@@ -26,7 +26,7 @@ public class ApplicationDbContext : DbContext
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
 		modelBuilder
-			.Entity<Customer>()
+			.Entity<User>()
 			.HasIndex(u => new { u.Email })
 			.IsUnique();
 		
@@ -52,8 +52,8 @@ public class ApplicationDbContext : DbContext
 			}
 		}
 		
-		modelBuilder.Entity<KusochekAdmin>()
-			.HasData(new KusochekAdmin
+		modelBuilder.Entity<User>()
+			.HasData(new User
 			{
 				Id = 1,
 				Email = "admin@kusochek.site",
@@ -61,7 +61,9 @@ public class ApplicationDbContext : DbContext
 					"E79B06F60D6344B5CD068D23EB165BA165E616F2CD15473F69CA747B6065911FB18AE463B38B225F68FEB005CA5CAAFDEC548F9DF879EC7C23AC35E9C5CC0E8D",
 				PasswordSalt = [190, 173, 182, 127, 238, 122, 171, 208, 134, 147, 62, 47, 77, 244, 3, 125],
 				FirstName = "Admin",
-				LastName = "Kusochek"
+				LastName = "Kusochek",
+				MobilePhone = "79125556677",
+				IsAdmin = true
 			});
 	}
 

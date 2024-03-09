@@ -5,7 +5,7 @@ namespace Domain.Entities;
 [Table("Reviews")]
 public class Review : BaseEntity
 {
-	public virtual Customer Customer { get; set; }
+	public virtual User User { get; set; }
 	
 	[Column("CustomerId")]
 	public int CustomerId { get; set; }
@@ -20,4 +20,7 @@ public class Review : BaseEntity
 	
 	[Column("Mark")]
 	public int Mark { get; set; }
+	
+	[Column("CreationDateTimeUtc")]
+	public DateTimeOffset CreationDateTimeUtc { get; set; }
 }

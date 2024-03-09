@@ -5,6 +5,14 @@ namespace Domain.Entities;
 [Table("Stories")]
 public class Story : BaseEntity
 {
+	public virtual Image PreviewImage { get; set; }
+	
+	[Column("PreviewImageId")]
+	public int PreviewImageId { get; set; }
+	
+	[Column("Title")]
+	public string Title { get; set; }
+	
 	public virtual ICollection<StoryMediaFile> Content { get; set; }
 	public DateTimeOffset ExpirationDateTimeUtc { get; set; }
 }

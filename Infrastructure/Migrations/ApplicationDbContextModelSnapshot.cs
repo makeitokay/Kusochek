@@ -25,104 +25,6 @@ namespace Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Domain.Entities.Customer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("Id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("Email");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("FirstName");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("LastName");
-
-                    b.Property<string>("PasswordHash")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("PasswordHash");
-
-                    b.Property<byte[]>("PasswordSalt")
-                        .IsRequired()
-                        .HasColumnType("bytea")
-                        .HasColumnName("PasswordSalt");
-
-                    b.Property<int>("ProfilePictureId")
-                        .HasColumnType("integer")
-                        .HasColumnName("ProfilePictureId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Email")
-                        .IsUnique();
-
-                    b.HasIndex("ProfilePictureId");
-
-                    b.ToTable("Customers");
-                });
-
-            modelBuilder.Entity("Domain.Entities.KusochekAdmin", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("Id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("Email");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("FirstName");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("LastName");
-
-                    b.Property<string>("PasswordHash")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("PasswordHash");
-
-                    b.Property<byte[]>("PasswordSalt")
-                        .IsRequired()
-                        .HasColumnType("bytea")
-                        .HasColumnName("PasswordSalt");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("KusochekAdmins");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Email = "admin@kusochek.site",
-                            FirstName = "Admin",
-                            LastName = "Kusochek",
-                            PasswordHash = "E79B06F60D6344B5CD068D23EB165BA165E616F2CD15473F69CA747B6065911FB18AE463B38B225F68FEB005CA5CAAFDEC548F9DF879EC7C23AC35E9C5CC0E8D",
-                            PasswordSalt = new byte[] { 190, 173, 182, 127, 238, 122, 171, 208, 134, 147, 62, 47, 77, 244, 3, 125 }
-                        });
-                });
-
             modelBuilder.Entity("Domain.Entities.MediaFile", b =>
                 {
                     b.Property<int>("Id")
@@ -172,9 +74,12 @@ namespace Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("Status");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
                 });
@@ -229,9 +134,6 @@ namespace Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("CustomerId")
-                        .HasColumnType("integer");
-
                     b.Property<int?>("OrderId")
                         .HasColumnType("integer");
 
@@ -243,13 +145,16 @@ namespace Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("Quantity");
 
-                    b.HasKey("Id");
+                    b.Property<int?>("UserId")
+                        .HasColumnType("integer");
 
-                    b.HasIndex("CustomerId");
+                    b.HasKey("Id");
 
                     b.HasIndex("OrderId");
 
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("ProductItems");
                 });
@@ -291,6 +196,10 @@ namespace Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTimeOffset>("CreationDateTimeUtc")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("CreationDateTimeUtc");
+
                     b.Property<int>("CustomerId")
                         .HasColumnType("integer")
                         .HasColumnName("CustomerId");
@@ -308,11 +217,14 @@ namespace Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("ReviewText");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerId");
-
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Reviews");
                 });
@@ -329,7 +241,18 @@ namespace Infrastructure.Migrations
                     b.Property<DateTimeOffset>("ExpirationDateTimeUtc")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int>("PreviewImageId")
+                        .HasColumnType("integer")
+                        .HasColumnName("PreviewImageId");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("Title");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("PreviewImageId");
 
                     b.ToTable("Stories");
                 });
@@ -358,6 +281,76 @@ namespace Infrastructure.Migrations
                     b.HasIndex("StoryId");
 
                     b.ToTable("StoryMediaFiles");
+                });
+
+            modelBuilder.Entity("Domain.Entities.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("Id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("Email");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("FirstName");
+
+                    b.Property<bool>("IsAdmin")
+                        .HasColumnType("boolean")
+                        .HasColumnName("IsAdmin");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("LastName");
+
+                    b.Property<string>("MobilePhone")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("MobilePhone");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("PasswordHash");
+
+                    b.Property<byte[]>("PasswordSalt")
+                        .IsRequired()
+                        .HasColumnType("bytea")
+                        .HasColumnName("PasswordSalt");
+
+                    b.Property<int?>("ProfilePictureId")
+                        .HasColumnType("integer")
+                        .HasColumnName("ProfilePictureId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.HasIndex("ProfilePictureId");
+
+                    b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Email = "admin@kusochek.site",
+                            FirstName = "Admin",
+                            IsAdmin = true,
+                            LastName = "Kusochek",
+                            MobilePhone = "79125556677",
+                            PasswordHash = "E79B06F60D6344B5CD068D23EB165BA165E616F2CD15473F69CA747B6065911FB18AE463B38B225F68FEB005CA5CAAFDEC548F9DF879EC7C23AC35E9C5CC0E8D",
+                            PasswordSalt = new byte[] { 190, 173, 182, 127, 238, 122, 171, 208, 134, 147, 62, 47, 77, 244, 3, 125 }
+                        });
                 });
 
             modelBuilder.Entity("ImageProduct", b =>
@@ -403,34 +396,19 @@ namespace Infrastructure.Migrations
                     b.HasDiscriminator().HasValue("Video");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Customer", b =>
-                {
-                    b.HasOne("Domain.Entities.Image", "ProfilePicture")
-                        .WithMany()
-                        .HasForeignKey("ProfilePictureId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ProfilePicture");
-                });
-
             modelBuilder.Entity("Domain.Entities.Order", b =>
                 {
-                    b.HasOne("Domain.Entities.Customer", "Customer")
+                    b.HasOne("Domain.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("CustomerId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Customer");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Entities.ProductItem", b =>
                 {
-                    b.HasOne("Domain.Entities.Customer", null)
-                        .WithMany("CartItems")
-                        .HasForeignKey("CustomerId");
-
                     b.HasOne("Domain.Entities.Order", null)
                         .WithMany("Items")
                         .HasForeignKey("OrderId");
@@ -440,6 +418,10 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Domain.Entities.User", null)
+                        .WithMany("CartItems")
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Product");
                 });
@@ -457,21 +439,32 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Review", b =>
                 {
-                    b.HasOne("Domain.Entities.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Domain.Entities.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Customer");
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Story", b =>
+                {
+                    b.HasOne("Domain.Entities.Image", "PreviewImage")
+                        .WithMany()
+                        .HasForeignKey("PreviewImageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PreviewImage");
                 });
 
             modelBuilder.Entity("Domain.Entities.StoryMediaFile", b =>
@@ -493,6 +486,15 @@ namespace Infrastructure.Migrations
                     b.Navigation("Story");
                 });
 
+            modelBuilder.Entity("Domain.Entities.User", b =>
+                {
+                    b.HasOne("Domain.Entities.Image", "ProfilePicture")
+                        .WithMany()
+                        .HasForeignKey("ProfilePictureId");
+
+                    b.Navigation("ProfilePicture");
+                });
+
             modelBuilder.Entity("ImageProduct", b =>
                 {
                     b.HasOne("Domain.Entities.Image", null)
@@ -508,11 +510,6 @@ namespace Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Entities.Customer", b =>
-                {
-                    b.Navigation("CartItems");
-                });
-
             modelBuilder.Entity("Domain.Entities.Order", b =>
                 {
                     b.Navigation("Items");
@@ -526,6 +523,11 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.Story", b =>
                 {
                     b.Navigation("Content");
+                });
+
+            modelBuilder.Entity("Domain.Entities.User", b =>
+                {
+                    b.Navigation("CartItems");
                 });
 #pragma warning restore 612, 618
         }
