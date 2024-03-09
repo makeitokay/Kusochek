@@ -5,7 +5,7 @@ namespace Domain.Entities;
 [Table("Stories")]
 public class Story : BaseEntity
 {
-	public virtual Image PreviewImage { get; set; }
+	public virtual MediaFile PreviewImage { get; set; }
 	
 	[Column("PreviewImageId")]
 	public int PreviewImageId { get; set; }

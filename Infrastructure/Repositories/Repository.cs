@@ -8,6 +8,7 @@ public interface IRepository<TEntity> where TEntity : BaseEntity
 	Task<TEntity> CreateAsync(TEntity entity);
 	Task<TEntity> UpdateAsync(TEntity entity);
 	Task<TEntity> GetAsync(int id);
+	Task<TEntity?> TryGetAsync(int id);
 	IQueryable<TEntity> Items { get; }
 }
 
@@ -43,4 +44,10 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
 	{
 		return await Set.FindAsync(id) ?? throw new ArgumentException($"Entity with id = {id} not found");
 	}
+	
+	public async Task<TEntity?> TryGetAsync(int id)
+	{
+		return await Set.FindAsync(id);
+	}
+
 }

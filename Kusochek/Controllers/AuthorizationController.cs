@@ -1,11 +1,10 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using DigitalDiary.Controllers.Dto.Authorization;
 using Domain.Entities;
 using Infrastructure;
 using Infrastructure.Repositories;
-using Kusochek.Controllers.Dto.Users;
+using Kusochek.Controllers.Dto.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 

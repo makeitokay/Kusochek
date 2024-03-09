@@ -12,7 +12,7 @@ public class UserDto
 
 	public string MobilePhone { get; set; } = default!;
 	
-	public byte[]? ProfilePicture { get; set; }
+	public string? ProfilePictureUrl { get; set; }
 	
 	public bool IsAdmin { get; set; }
 }
@@ -27,7 +27,7 @@ public static class UserDtoExtensions
 			LastName = user.LastName,
 			Email = user.Email,
 			MobilePhone = user.MobilePhone,
-			ProfilePicture = user.ProfilePicture?.Content,
+			ProfilePictureUrl = user.ProfilePicture?.FileUrl,
 			IsAdmin = user.IsAdmin
 		};
 	}

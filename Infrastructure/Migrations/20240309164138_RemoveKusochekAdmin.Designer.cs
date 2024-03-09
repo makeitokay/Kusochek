@@ -3,6 +3,7 @@ using System;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240309164138_RemoveKusochekAdmin")]
+    partial class RemoveKusochekAdmin
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,19 +37,18 @@ namespace Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("FileUrl")
+                    b.Property<string>("Discriminator")
                         .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("FileUrl");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("Type");
+                        .HasMaxLength(13)
+                        .HasColumnType("character varying(13)");
 
                     b.HasKey("Id");
 
                     b.ToTable("MediaFiles");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("MediaFile");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Domain.Entities.Order", b =>
@@ -354,7 +356,7 @@ namespace Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("MediaFileProduct", b =>
+            modelBuilder.Entity("ImageProduct", b =>
                 {
                     b.Property<int>("ImagesId")
                         .HasColumnType("integer");
@@ -367,6 +369,34 @@ namespace Infrastructure.Migrations
                     b.HasIndex("ProductsId");
 
                     b.ToTable("ProductImages", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.Image", b =>
+                {
+                    b.HasBaseType("Domain.Entities.MediaFile");
+
+                    b.Property<byte[]>("Content")
+                        .IsRequired()
+                        .HasColumnType("bytea")
+                        .HasColumnName("Content");
+
+                    b.ToTable("MediaFiles");
+
+                    b.HasDiscriminator().HasValue("Image");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Video", b =>
+                {
+                    b.HasBaseType("Domain.Entities.MediaFile");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("FileName");
+
+                    b.ToTable("MediaFiles");
+
+                    b.HasDiscriminator().HasValue("Video");
                 });
 
             modelBuilder.Entity("Domain.Entities.Order", b =>
@@ -382,12 +412,12 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.ProductItem", b =>
                 {
-                    b.HasOne("Domain.Entities.Order", "Order")
+                    b.HasOne("Domain.Entities.Order", null)
                         .WithMany("Items")
                         .HasForeignKey("OrderId");
 
                     b.HasOne("Domain.Entities.Product", "Product")
-                        .WithMany("ProductItems")
+                        .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -395,8 +425,6 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.User", null)
                         .WithMany("CartItems")
                         .HasForeignKey("UserId");
-
-                    b.Navigation("Order");
 
                     b.Navigation("Product");
                 });
@@ -415,7 +443,7 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.Review", b =>
                 {
                     b.HasOne("Domain.Entities.Product", "Product")
-                        .WithMany("Reviews")
+                        .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -433,7 +461,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Story", b =>
                 {
-                    b.HasOne("Domain.Entities.MediaFile", "PreviewImage")
+                    b.HasOne("Domain.Entities.Image", "PreviewImage")
                         .WithMany()
                         .HasForeignKey("PreviewImageId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -463,16 +491,16 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
-                    b.HasOne("Domain.Entities.MediaFile", "ProfilePicture")
+                    b.HasOne("Domain.Entities.Image", "ProfilePicture")
                         .WithMany()
                         .HasForeignKey("ProfilePictureId");
 
                     b.Navigation("ProfilePicture");
                 });
 
-            modelBuilder.Entity("MediaFileProduct", b =>
+            modelBuilder.Entity("ImageProduct", b =>
                 {
-                    b.HasOne("Domain.Entities.MediaFile", null)
+                    b.HasOne("Domain.Entities.Image", null)
                         .WithMany()
                         .HasForeignKey("ImagesId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -492,11 +520,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Product", b =>
                 {
-                    b.Navigation("ProductItems");
-
                     b.Navigation("Promotions");
-
-                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("Domain.Entities.Story", b =>

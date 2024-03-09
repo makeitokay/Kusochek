@@ -29,11 +29,6 @@ public class ApplicationDbContext : DbContext
 			.Entity<User>()
 			.HasIndex(u => new { u.Email })
 			.IsUnique();
-		
-		modelBuilder.Entity<MediaFile>()
-			.HasDiscriminator<string>("Discriminator")
-			.HasValue<Image>("Image")
-			.HasValue<Video>("Video");
 
 		modelBuilder.Entity<Product>()
 			.HasMany(p => p.Images)

@@ -3,7 +3,19 @@
 namespace Domain.Entities;
 
 [Table("MediaFiles")]
-public abstract class MediaFile : BaseEntity
+public class MediaFile : BaseEntity
 {
-	public string Discriminator { get; set; } = default!;
+	[Column("Type")]
+	public MediaFileType Type { get; set; }
+	
+	[Column("FileUrl")]
+	public string FileUrl { get; set; } = default!;
+	
+	public virtual ICollection<Product> Products { get; set; }
+}
+
+public enum MediaFileType
+{
+	Image,
+	Video
 }

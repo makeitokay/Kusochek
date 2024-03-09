@@ -1,6 +1,6 @@
 ﻿using Domain.Entities;
 
-namespace DigitalDiary.Controllers.Dto.Authorization;
+namespace Kusochek.Controllers.Dto.Authorization;
 
 public class LoginDto
 {

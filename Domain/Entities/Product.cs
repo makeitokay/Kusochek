@@ -23,6 +23,16 @@ public class Product : BaseEntity
 		}
 	}
 
+	public double? AverageMark
+	{
+		get
+		{
+			if (Reviews.Count != 0)
+				return Reviews.Average(r => r.Mark);
+			return null;
+		}
+	}
+
 	[Column("Weight")]
 	public double Weight { get; set; }
 	
@@ -32,9 +42,13 @@ public class Product : BaseEntity
 	[Column("Description", TypeName = "text")]
 	public string Description { get; set; }
 	
-	public virtual ICollection<Image> Images { get; set; }
+	public virtual ICollection<MediaFile> Images { get; set; }
 	
 	public virtual ICollection<Promotion> Promotions { get; set; }
+	
+	public virtual ICollection<ProductItem> ProductItems { get; set; }
+	
+	public virtual ICollection<Review> Reviews { get; set; }
 }
 
 public enum ProductCategory

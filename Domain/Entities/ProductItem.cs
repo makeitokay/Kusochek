@@ -12,4 +12,6 @@ public class ProductItem : BaseEntity
 	
 	[Column("Quantity")]
 	public int Quantity { get; set; }
+	
+	public virtual Order? Order { get; set; }
 }

@@ -14,11 +14,16 @@ public class UserProfileController : ControllerBase
 {
 	private readonly IUserRepository _userRepository;
 	private readonly IPasswordManager _passwordManager;
+	private readonly IStaticFileManager _staticFileManager;
 
-	public UserProfileController(IUserRepository userRepository, IPasswordManager passwordManager)
+	public UserProfileController(
+		IUserRepository userRepository,
+		IPasswordManager passwordManager,
+		IStaticFileManager staticFileManager)
 	{
 		_userRepository = userRepository;
 		_passwordManager = passwordManager;
+		_staticFileManager = staticFileManager;
 	}
 
 	[HttpGet]
@@ -39,14 +44,15 @@ public class UserProfileController : ControllerBase
 			return BadRequest();
 		
 		var file = Request.Form.Files[0];
-		using var memoryStream = new MemoryStream();
-		file.CopyTo(memoryStream);
-		var image = memoryStream.ToArray();
+		using var fileStream = file.OpenReadStream();
+		var fileUrl = await _staticFileManager.UploadFileAsync(fileStream, file.Name);
 
-		user.ProfilePicture = new Image
+		user.ProfilePicture = new MediaFile
 		{
-			Content = image
+			FileUrl = fileUrl,
+			Type = MediaFileType.Image
 		};
+
 		await _userRepository.UpdateAsync(user);
 
 		return Ok();
