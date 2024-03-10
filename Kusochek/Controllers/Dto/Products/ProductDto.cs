@@ -74,7 +74,9 @@ public static class ProductDtoExtensions
 			Category = product.Category.ToString(),
 			AverageMark = product.AverageMark,
 			Images = product.Images.Select(i => i.FileUrl),
-			Reviews = product.Reviews.Select(r => r.MapToReviewDto()),
+			Reviews = product.Reviews
+				.OrderByDescending(r => r.CreationDateTimeUtc)
+				.Select(r => r.MapToReviewDto()),
 			Weight = product.Weight,
 			Quantity = product.Quantity
 		};

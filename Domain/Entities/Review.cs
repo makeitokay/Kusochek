@@ -7,8 +7,8 @@ public class Review : BaseEntity
 {
 	public virtual User User { get; set; }
 	
-	[Column("CustomerId")]
-	public int CustomerId { get; set; }
+	[Column("UserId")]
+	public int UserId { get; set; }
 	
 	public virtual Product Product { get; set; }
 	
