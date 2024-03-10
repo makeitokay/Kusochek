@@ -25,6 +25,8 @@ public class User : BaseEntity
 	
 	public virtual ICollection<ProductItem> CartItems { get; set; }
 	
+	public virtual ICollection<Order> Orders { get; set; }
+	
 	public virtual MediaFile? ProfilePicture { get; set; }
 	
 	[Column("ProfilePictureId")]

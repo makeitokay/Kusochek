@@ -23,6 +23,8 @@ public class Product : BaseEntity
 		}
 	}
 
+	public decimal ActualPrice => PromotionPrice ?? Price;
+
 	public double? AverageMark
 	{
 		get
