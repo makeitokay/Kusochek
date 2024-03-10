@@ -9,6 +9,7 @@ public interface IRepository<TEntity> where TEntity : BaseEntity
 	Task<TEntity> UpdateAsync(TEntity entity);
 	Task<TEntity> GetAsync(int id);
 	Task<TEntity?> TryGetAsync(int id);
+	Task DeleteAsync(TEntity entity);
 	IQueryable<TEntity> Items { get; }
 }
 
@@ -17,6 +18,12 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
 	protected ApplicationDbContext DbContext { get; }
 
 	protected DbSet<TEntity> Set { get; }
+
+	public async Task DeleteAsync(TEntity entity)
+	{
+		Set.Remove(entity);
+		await DbContext.SaveChangesAsync();
+	}
 
 	public IQueryable<TEntity> Items => Set.AsQueryable();
 

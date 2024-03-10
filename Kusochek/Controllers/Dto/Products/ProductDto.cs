@@ -13,6 +13,8 @@ public class ProductDto
 	public string? ImageUrl { get; set; }
 	
 	public double? AverageMark { get; set; }
+	
+	public int Quantity { get; set; }
 }
 
 public class ProductDetailedInformationDto : ProductDto
@@ -21,6 +23,11 @@ public class ProductDetailedInformationDto : ProductDto
 	public IEnumerable<ReviewDto> Reviews { get; set; }
 	
 	public double Weight { get; set; }
+}
+
+public class CartProductDto : ProductDto
+{
+	public int QuantityInCart { get; set; }
 }
 
 public static class ProductDtoExtensions
@@ -35,11 +42,28 @@ public static class ProductDtoExtensions
 			PromotionPrice = product.PromotionPrice,
 			Category = product.Category.ToString(),
 			ImageUrl = product.Images.FirstOrDefault()?.FileUrl,
-			AverageMark = product.AverageMark
+			AverageMark = product.AverageMark,
+			Quantity = product.Quantity
 		};
 	}
 	
-	public static ProductDto MapToProductDetailedInformationDto(this Product product)
+	public static CartProductDto MapToCartProductDto(this Product product, int quantityInCart)
+	{
+		return new CartProductDto
+		{
+			Id = product.Id,
+			Name = product.Name,
+			Price = product.Price,
+			PromotionPrice = product.PromotionPrice,
+			Category = product.Category.ToString(),
+			ImageUrl = product.Images.FirstOrDefault()?.FileUrl,
+			AverageMark = product.AverageMark,
+			Quantity = product.Quantity,
+			QuantityInCart = quantityInCart
+		};
+	}
+	
+	public static ProductDetailedInformationDto MapToProductDetailedInformationDto(this Product product)
 	{
 		return new ProductDetailedInformationDto
 		{
@@ -51,7 +75,8 @@ public static class ProductDtoExtensions
 			AverageMark = product.AverageMark,
 			Images = product.Images.Select(i => i.FileUrl),
 			Reviews = product.Reviews.Select(r => r.MapToReviewDto()),
-			Weight = product.Weight
+			Weight = product.Weight,
+			Quantity = product.Quantity
 		};
 	}
 }

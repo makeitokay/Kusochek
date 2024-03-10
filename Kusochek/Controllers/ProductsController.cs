@@ -107,7 +107,7 @@ public class ProductsController : ControllerBase
 			var images = new List<MediaFile>();
 			foreach (var file in dto.Images)
 			{
-				using var fileStream = file.OpenReadStream();
+				await using var fileStream = file.OpenReadStream();
 				var fileUrl = await _staticFileManager.UploadFileAsync(fileStream, file.FileName);
 				images.Add(new MediaFile
 				{
