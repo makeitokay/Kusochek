@@ -1,0 +1,24 @@
+﻿version: "3.6"
+services:
+  nginx:
+    image: makeitokay/kusochek_nginx:latest
+    restart: always
+    build:
+      context: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /etc/letsencrypt/live/kusochek.site/fullchain.pem:/etc/nginx/certs/fullchain.pem
+      - /etc/letsencrypt/live/kusochek.site/privkey.pem:/etc/nginx/certs/privkey.pem
+    depends_on:
+      - kusochek
+  kusochek:
+    image: makeitokay/kusochek:latest
+    restart: always
+    build:
+      context: .
+      target: Kusochek
+    environment:
+      - DOTNET_ENVIRONMENT=Production
+      - KUSOCHEK_ConnectionStrings:Default=User ID=kusochek;Password=${POSTGRES_PASSWORD};Server=83.147.246.7;Port=5432;Database=Kusochek;Pooling=true;
