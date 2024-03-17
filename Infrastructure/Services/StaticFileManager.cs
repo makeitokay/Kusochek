@@ -7,15 +7,16 @@ public interface IStaticFileManager
 
 public class StaticFileManager : IStaticFileManager
 {
-	private const string UploadDirectory = "C:\\Users\\makeitokay\\RiderProjects\\Kusochek\\static";
+	private const string UploadDirectory = "static";
 	
 	public async Task<string> UploadFileAsync(Stream fileStream, string fileName)
 	{
 		var uniqueFileName = Guid.NewGuid() + Path.GetExtension(fileName);
-		if (!Directory.Exists(UploadDirectory))
-			Directory.CreateDirectory(UploadDirectory);
+		var uploadDirectoryPath = Path.Combine(Directory.GetCurrentDirectory(), UploadDirectory);
+		if (!Directory.Exists(uploadDirectoryPath))
+			Directory.CreateDirectory(uploadDirectoryPath);
 			
-		var filePath = Path.Combine(UploadDirectory, uniqueFileName);
+		var filePath = Path.Combine(uploadDirectoryPath, uniqueFileName);
 
 		await using var output = new FileStream(filePath, FileMode.Create);
 		await fileStream.CopyToAsync(output);
