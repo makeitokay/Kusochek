@@ -28,12 +28,12 @@ jobs:
         run: docker-compose -f docker-compose.production.yaml push
 
       - name: Deploy to VPS
-        uses: astappiev/docker-compose-remote-action@master
+        uses: chaplyk/docker-compose-remote-action@v1.1
         with:
-          docker_compose_filename: docker-compose.production.yaml
+          compose_file: docker-compose.production.yaml
           ssh_host: 83.147.246.7
           ssh_user: root
-          docker_compose_prefix: kusochek
-          ssh_private_key: ${{ secrets.DOCKER_SSH_PRIVATE_KEY }}
-          ssh_host_public_key: ${{ secrets.DOCKER_SSH_PUBLIC_KEY }}
-          docker_args: --env-file ./.env up -d --force-recreate
+          force_recreate: true
+          pull: true
+          options: --env-file ./.env
+          ssh_key: ${{ secrets.DOCKER_SSH_PRIVATE_KEY }}
