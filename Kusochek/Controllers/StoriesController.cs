@@ -74,7 +74,7 @@ public class StoriesController : ControllerBase
 
 		await _storyRepository.CreateAsync(story);
 
-		return Ok();
+		return Ok(story.Id);
 	}
 	
 	[HttpPost("{storyId:int}")]

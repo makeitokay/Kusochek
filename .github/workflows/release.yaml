@@ -35,5 +35,5 @@ jobs:
           ssh_user: root
           docker_args: -d --force-recreate --env-file ./.env
           docker_compose_prefix: kusochek
-          ssh_key: ${{ secrets.DOCKER_SSH_PRIVATE_KEY }}
+          ssh_private_key: ${{ secrets.DOCKER_SSH_PRIVATE_KEY }}
           ssh_host_public_key: ${{ secrets.DOCKER_SSH_PUBLIC_KEY }}
