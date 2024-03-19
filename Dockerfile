@@ -16,5 +16,6 @@ WORKDIR /app
 COPY --from=publish /app/out/Kusochek .
 
 EXPOSE 80
+ENV ASPNETCORE_URLS=http://*:80
 
 ENTRYPOINT ["dotnet", "Kusochek.dll"]
