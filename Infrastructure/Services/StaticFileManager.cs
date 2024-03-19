@@ -5,10 +5,10 @@ public interface IStaticFileManager
 	Task<string> UploadFileAsync(Stream fileStream, string fileName);
 }
 
-public class StaticFileManager : IStaticFileManager
+public class StaticFileManager(bool isProduction) : IStaticFileManager
 {
 	private const string UploadDirectory = "static";
-	
+
 	public async Task<string> UploadFileAsync(Stream fileStream, string fileName)
 	{
 		var uniqueFileName = Guid.NewGuid() + Path.GetExtension(fileName);
@@ -21,6 +21,6 @@ public class StaticFileManager : IStaticFileManager
 		await using var output = new FileStream(filePath, FileMode.Create);
 		await fileStream.CopyToAsync(output);
 
-		return filePath;
+		return isProduction ? $"https://api.kusochek.site/static/{uniqueFileName}" : filePath;
 	}
 }

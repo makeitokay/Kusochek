@@ -11,6 +11,7 @@ services:
     volumes:
       - /etc/letsencrypt/live/kusochek.site/fullchain.pem:/etc/nginx/certs/fullchain.pem
       - /etc/letsencrypt/live/kusochek.site/privkey.pem:/etc/nginx/certs/privkey.pem
+      - /app/static:/var/www:ro
     depends_on:
       - kusochek
   kusochek:
@@ -19,6 +20,8 @@ services:
     build:
       context: .
       target: Kusochek
+    volumes:
+      - /app/static:/app/static
     environment:
       - DOTNET_ENVIRONMENT=Production
       - KUSOCHEK_ConnectionStrings:Default=User ID=kusochek;Password=${POSTGRES_PASSWORD};Server=83.147.246.7;Port=5432;Database=Kusochek;Pooling=true;

@@ -47,7 +47,8 @@ services.AddDbContext(connectionString);
 
 services.AddRepositories();
 services.AddSingleton<IPasswordManager, PasswordManager>();
-services.AddSingleton<IStaticFileManager, StaticFileManager>();
+services.AddSingleton<IStaticFileManager, StaticFileManager>(_ =>
+	new StaticFileManager(builder.Environment.IsProduction()));
 
 var app = builder.Build();
 
