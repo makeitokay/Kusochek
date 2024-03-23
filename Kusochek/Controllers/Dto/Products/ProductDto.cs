@@ -23,6 +23,7 @@ public class ProductDetailedInformationDto : ProductDto
 	public IEnumerable<ReviewDto> Reviews { get; set; }
 	
 	public double Weight { get; set; }
+	public string Description { get; set; }
 }
 
 public class CartProductDto : ProductDto
@@ -78,7 +79,8 @@ public static class ProductDtoExtensions
 				.OrderByDescending(r => r.CreationDateTimeUtc)
 				.Select(r => r.MapToReviewDto()),
 			Weight = product.Weight,
-			Quantity = product.Quantity
+			Quantity = product.Quantity,
+			Description = product.Description
 		};
 	}
 }
