@@ -1,0 +1,22 @@
+$blue: #428BFF;
+$red: #FF4A53;
+$dark: #333;
+
+$accent: $blue;
+$accent-inactive: desaturate($accent, 85%);
+$secondary: $accent-inactive;
+
+body {
+    background: #efefef;
+    color: $dark;
+    font-family: "Raleway";
+    height: 100%;
+
+    h1 {
+        text-align: center;
+        color: $accent;
+        font-weight: 300;
+        padding: 40px 0 20px 0;
+        margin: 0;
+    }
+}

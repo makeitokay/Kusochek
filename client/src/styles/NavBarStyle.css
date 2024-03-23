@@ -1,0 +1,17 @@
+.nav_bar_custom{
+    background-color: black !important;
+    line-height: 3rem;
+    font-size: 25px;
+}
+.nav_bar_custom .navbar-brand{
+    font-size: 30px;
+}
+.enterButton{
+    background:transparent;
+    border:0;
+    font-family: "Raleway";
+    color:rgba(255, 255, 255, 0.55)
+}
+.enterButton:hover{
+    color: rgba(255, 255, 255, 0.75);
+}

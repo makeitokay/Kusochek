@@ -1,0 +1,14 @@
+.catalogCard{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+/*.card {*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    height: 100%;*/
+/*}*/
+
+.catalogCard >.card-body {
+    flex-grow: 1;
+}

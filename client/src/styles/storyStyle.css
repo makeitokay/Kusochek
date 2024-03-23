@@ -1,0 +1,52 @@
+.story {
+    margin: 0 5px;
+    width: auto;
+    height: 11vw;
+    border-radius: 20%;
+    background-position: center;
+    background-size: cover;
+}
+
+.story:hover {
+    cursor: pointer;
+}
+
+.videoPlayer .progress-bar {
+    transition: none !important;
+}
+
+.videoPlayer .active.progress .progress-bar {
+    transition: var(--bs-progress-bar-transition) !important;
+}
+
+
+/* Стили для мобильных телефонов */
+@media (max-width: 480px) {
+    .story {
+        height: 10vh;
+    }
+}
+
+/* Стили для планшетов в портретной ориентации */
+/*@media (min-width: 481px) and (max-width: 768px) {*/
+/*    body {*/
+/*        background-color: lightgreen;*/
+/*        font-size: 15px;*/
+/*    }*/
+/*}*/
+
+/*!* Стили для планшетов в альбомной ориентации и маленьких компьютеров *!*/
+/*@media (min-width: 769px) and (max-width: 1024px) {*/
+/*    body {*/
+/*        background-color: wheat;*/
+/*        font-size: 16px;*/
+/*    }*/
+/*}*/
+
+/*!* Стили для настольных компьютеров *!*/
+/*@media (min-width: 1025px) {*/
+/*    body {*/
+/*        background-color: lightcoral;*/
+/*        font-size: 17px;*/
+/*    }*/
+/*}*/

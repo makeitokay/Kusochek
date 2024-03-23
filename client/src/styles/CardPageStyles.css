@@ -1,0 +1,52 @@
+.extraImage {
+}
+
+.extraImage:hover {
+    cursor: pointer;
+}
+
+.extraImage.focus {
+    opacity: 0.7;
+}
+
+.customizerProduct,
+.customizerProduct.show,
+.customizerProduct:hover,
+.customizerProduct:first-child:active {
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid black;
+    border-radius: 0;
+}
+
+.customizerProduct,
+.customizerProduct.show {
+    color: black;
+}
+
+.customizerProduct:hover,
+.customizerProduct:first-child:active {
+    color: grey;
+}
+
+.customizerProduct::after {
+    position: absolute;
+    top: 50%;
+    right: 1vw;
+}
+
+.dropdown-item:active {
+    background: transparent;
+    color: black;
+}
+
+.columnPhotos {
+    overflow-x: auto;
+}
+
+.columnPhotos::-webkit-scrollbar {
+    width: 0;
+}
+.info .nav-link{
+    color: black;
+}
