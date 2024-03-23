@@ -54,8 +54,7 @@ public static class ProductDtoExtensions
 		{
 			Id = product.Id,
 			Name = product.Name,
-			Price = product.Price,
-			PromotionPrice = product.PromotionPrice,
+			Price = product.ActualPrice * quantityInCart,
 			Category = product.Category.ToString(),
 			ImageUrl = product.Images.FirstOrDefault()?.FileUrl,
 			AverageMark = product.AverageMark,
