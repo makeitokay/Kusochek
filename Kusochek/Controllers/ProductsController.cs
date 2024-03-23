@@ -62,6 +62,10 @@ public class ProductsController : ControllerBase
 		else if (getProductsDto.SortBy == "price")
 			productsQueryable = productsQueryable.OrderBy(p => p.Price);
 
+		if (getProductsDto.Query is not null)
+			productsQueryable = productsQueryable
+				.Where(p => p.Name.ToLower().Contains(getProductsDto.Query.ToLower()));
+
 		productsQueryable = productsQueryable
 			.Skip((getProductsDto.Page - 1) * 30)
 			.Take(30);
