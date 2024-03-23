@@ -128,6 +128,12 @@ public class ProductsController : ControllerBase
 		return Ok();
 	}
 
+	[HttpGet("categories")]
+	public IActionResult GetAllProductCategories()
+	{
+		return Ok(Enum.GetValues<ProductCategory>());
+	}
+
 	private static ProductCategory ParseCategory(string category)
 	{
 		Enum.TryParse<ProductCategory>(category, out var result);
