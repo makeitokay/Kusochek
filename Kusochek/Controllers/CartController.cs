@@ -83,12 +83,16 @@ public class CartController : ControllerBase
 	}
 
 	[HttpGet]
-	public async Task<IActionResult> GetProductsInCartAsync()
+	public async Task<IActionResult> GetCartAsync()
 	{
 		var userId = User.Claims.GetUserId();
 		var user = await _userRepository.GetAsync(userId);
 
 		var currentCart = user.CartItems;
-		return Ok(currentCart.Select(pi => pi.Product.MapToCartProductDto(pi.Quantity)));
+		return Ok(new
+		{
+			totalCost = currentCart.Sum(pi => pi.Product.ActualPrice * pi.Quantity),
+			products = currentCart.Select(pi => pi.Product.MapToCartProductDto(pi.Quantity))
+		});
 	}
 }
