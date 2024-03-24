@@ -47,14 +47,6 @@ const SettingOrder = () => {
             return {key: status, text: orderStatus[status as keyof typeof orderStatus], value: status}
         }))
     }, [])
-    const handleDelete = (order: Order) => {
-        const id = order.productItems.map((product) => Number(product.id))
-        // getAllItemsRequest(undefined, id).then((data) => {
-        //     setSelectedProducts(data)
-        // })
-        // setShowModal(true);
-    };
-
     function formatUTCString(utcString: string): string {
         const date = new Date(utcString);
 
@@ -114,7 +106,7 @@ const SettingOrder = () => {
                                       selection
                                       options={statuses}
                                       value={currentStatuses[index]}
-                                      onChange={(e, data) =>
+                                      onChange={(_, data) =>
                                           changeStatus(data.value as string, index)}
                         /></td>
                         <td>{formatUTCString(order.creationDateTimeUtc)}</td>

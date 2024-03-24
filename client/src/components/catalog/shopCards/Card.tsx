@@ -25,6 +25,7 @@ const Card = () => {
     const notifyError = (message: string) => toast.error(message);
     const notifySuccess = (message: string) => toast.success(message);
     const [mainImage, setMainImage] = useState<string>("https://lp2.hm.com/hmgoepprod?set=format%5Bwebp%5D%2Cquality%5B79%5D%2Csource%5B%2F78%2Fba%2F78ba18ad82ffc28bb283f42a01c3f84af15adfd8.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BLOOKBOOK%5D%2Cres%5Bm%5D%2Chmver%5B1%5D&call=url%5Bfile%3A%2Fproduct%2Fmain%5D")
+    const [otherImages, setOtherImages] = useState<string[]>([])
     const {id} = useParams<string>()
     const [product, setProduct] = useState<ItemCard>()
     useEffect(() => {
@@ -32,8 +33,12 @@ const Card = () => {
             getItemInfoRequest(id)
                 .then((data) => {
                     setProduct(data)
-                    console.log(data)
-                    console.log(data.averageMark)
+                    setMainImage(data.images[0])
+                    let array = []
+                    for (let i = 1; i < data.images.length; i++) {
+                        array.push(data.images[i])
+                    }
+                    setOtherImages(array)
                 })
                 .catch(() => notifyError("Товар не получен"))
         }
@@ -50,7 +55,7 @@ const Card = () => {
 
     function addItemCart() {
         if (id !== undefined) {
-            addItemCartRequest(id).then(()=>notifySuccess("Товар добавлен")).catch(()=> notifyError("Не удалось добавить товар"))
+            addItemCartRequest(id).then(() => notifySuccess("Товар добавлен")).catch(() => notifyError("Не удалось добавить товар"))
         }
     }
 
@@ -70,22 +75,12 @@ const Card = () => {
                     </div>
                     <div style={{width: "25%"}} className="columnPhotos">
                         <div>
-                            <div className="extraImage" onClick={(e) => chooseImage(e)}>
-                                <Image
-                                    src="https://image.hm.com/assets/hm/83/e9/83e9fd280f18eb8d687ee3a66cd9b146103cd5ff.jpg"/>
-                            </div>
-                            <div className="extraImage" onClick={(e) => chooseImage(e)}>
-                                <Image
-                                    src="https://lp2.hm.com/hmgoepprod?set=format%5Bwebp%5D%2Cquality%5B79%5D%2Csource%5B%2F78%2Fba%2F78ba18ad82ffc28bb283f42a01c3f84af15adfd8.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BLOOKBOOK%5D%2Cres%5Bm%5D%2Chmver%5B1%5D&call=url%5Bfile%3A%2Fproduct%2Fmain%5D"/>
-                            </div>
-                            <div className="extraImage" onClick={(e) => chooseImage(e)}>
-                                <Image
-                                    src="https://image.hm.com/assets/hm/c6/b4/c6b4d03e0b105c77ef2cd4330ac46a4267c7ce55.jpg"/>
-                            </div>
-                            <div className="extraImage" onClick={(e) => chooseImage(e)}>
-                                <Image
-                                    src="https://lp2.hm.com/hmgoepprod?set=format%5Bwebp%5D%2Cquality%5B79%5D%2Csource%5B%2F78%2Fba%2F78ba18ad82ffc28bb283f42a01c3f84af15adfd8.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BLOOKBOOK%5D%2Cres%5Bm%5D%2Chmver%5B1%5D&call=url%5Bfile%3A%2Fproduct%2Fmain%5D"/>
-                            </div>
+                            {otherImages.map((image) =>
+                                <div className="extraImage" onClick={(e) => chooseImage(e)}>
+                                    <Image
+                                        src={image}/>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </Col>

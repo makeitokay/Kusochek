@@ -29,7 +29,6 @@ const NavBar = () => {
                 <NavBarComponent.Collapse className="justify-content-center">
                     <Nav>
                         <CustomLink className="nav-link" to="/">Главная</CustomLink>
-                        <CustomLink className="nav-link" to={"info"}>Инфо</CustomLink>
                         <CustomLink className="nav-link" to={"shop"}>Магазин</CustomLink>
                         {user.isAdmin ? <CustomLink className="nav-link" to={"admin_panel"}>Админ</CustomLink> :
                             <></>}
@@ -45,22 +44,6 @@ const NavBar = () => {
                         style={{color: "white", cursor: "pointer"}}
                         size="large"
                         name="cart-outline"/>
-                    {/*<Image*/}
-                    {/*    style={{background: "black", height: "50px", width: "50px", objectFit: "cover"}}*/}
-                    {/*    src="https://sneg.top/uploads/posts/2023-06/1687931407_sneg-top-p-prikolnie-avatarki-dlya-malchikov-vkontakt-5.jpg"*/}
-                    {/*    roundedCircle*/}
-                    {/*/>*/}
-                    {/*{deepEqual(user, {id: 0, userName: null, email: null, role: null}) ?*/}
-                    {/*    <CustomLink className="nav-link" to="login">*/}
-                    {/*        Войти*/}
-                    {/*    </CustomLink>*/}
-                    {/*    :*/}
-                    {/*    <Image*/}
-                    {/*        style={{background: "black", height: "50px", width: "50px", objectFit: "cover"}}*/}
-                    {/*        src="https://sneg.top/uploads/posts/2023-06/1687931407_sneg-top-p-prikolnie-avatarki-dlya-malchikov-vkontakt-5.jpg"*/}
-                    {/*        roundedCircle*/}
-                    {/*    />*/}
-                    {/*}*/}
                 </NavBarComponent.Collapse>
             </Container>
         </NavBarComponent>
