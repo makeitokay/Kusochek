@@ -42,7 +42,7 @@ const AdminPage: React.FC = () => {
         description: "",
         quantity: 0
     });
-    const [promotion, setPromotion] = useState({productId: 0, promotionPrice: 0, expirationDate: null})
+    const [promotion, setPromotion] = useState({productId: 0, promotionPrice: 0, expirationDate: ""})
     const [products, setProducts] = useState<Im[]>([])
     const [categories, setCategories] = useState<{
         key: string;
@@ -86,8 +86,15 @@ const AdminPage: React.FC = () => {
     };
     const handlePromotionChange = (e: ChangeEvent<HTMLInputElement>) => {
         const {name, value} = e.target;
-        console.log(value)
-        setPromotion({...promotion, [name]: value});
+        if (name === "expirationDate") {
+            const date = new Date(value + "T00:00:00Z").toISOString();
+            setPromotion(prev => ({
+                ...prev,
+                [name]: date,
+            }));
+        } else {
+            setPromotion({...promotion, [name]: value});
+        }
     };
     const changeDropdown = (data: any) => {
         const selectedOption = products.find(option => option.value === data.value);
@@ -145,9 +152,8 @@ const AdminPage: React.FC = () => {
             formData.append("category", currentCategory)
             addProductRequest(formData).then(() => notifySuccess("Товар добавлен")).catch(e => notifyError("Не удалоь добавить товар"))
             console.log('Product submitted:', product);
-        } else {
-            const formData = new FormData(e.currentTarget as HTMLFormElement);
-            addPromotionRequest(formData)
+        } else if (key === "promotion") {
+            addPromotionRequest(promotion).then(() => notifySuccess("Акция добавлена")).catch(() => notifyError("Не удалось добавить акцию"))
         }
     };
 
@@ -320,8 +326,8 @@ const AdminPage: React.FC = () => {
                                 onChange={handlePromotionChange}
                             />
                         </Form.Group>
-                        <Form.Group className="mb-3" controlId="expirationDate">
-                            <Form.Label>Дата окончания</Form.Label>
+                        <Form.Group className="mb-3" controlId="obj">
+                            <Form.Label>Выбери продукт</Form.Label>
                             <Dropdown
                                 placeholder='State'
                                 fluid
