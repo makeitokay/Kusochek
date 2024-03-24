@@ -25,3 +25,10 @@ services:
     environment:
       - DOTNET_ENVIRONMENT=Production
       - KUSOCHEK_ConnectionStrings:Default=User ID=kusochek;Password=${POSTGRES_PASSWORD};Server=83.147.246.7;Port=5432;Database=Kusochek;Pooling=true;
+  kusochek_client:
+    image: makeitokay/kusochek_client:latest
+    restart: always
+    build:
+      context: client
+    environment:
+      - REACT_APP_API_BASE_URL=https://api.kusochek.site

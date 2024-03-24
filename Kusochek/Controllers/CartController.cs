@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Kusochek.Controllers;
 
 [Route("cart")]
+[Authorize]
 public class CartController : ControllerBase
 {
 	private readonly IRepository<Product> _productRepository;
@@ -23,7 +24,6 @@ public class CartController : ControllerBase
 	}
 
 	[HttpPost("{productId:int}")]
-	[Authorize]
 	public async Task<IActionResult> AddProductToCartAsync(int productId)
 	{
 		var userId = User.Claims.GetUserId();
