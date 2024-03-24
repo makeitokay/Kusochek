@@ -135,7 +135,7 @@ public class ProductsController : ControllerBase
 	[HttpGet("categories")]
 	public IActionResult GetAllProductCategories()
 	{
-		return Ok(Enum.GetValues<ProductCategory>());
+		return Ok(Enum.GetNames(typeof(ProductCategory)));
 	}
 
 	private static ProductCategory ParseCategory(string category)
