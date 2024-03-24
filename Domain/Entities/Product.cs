@@ -55,5 +55,9 @@ public class Product : BaseEntity
 
 public enum ProductCategory
 {
-	Cake
+	Cake,
+	SmallCake,
+	Eclair,
+	Macaroon,
+	Dessert
 }
