@@ -1,5 +1,5 @@
 export interface StoryBlockType {
     preview: string,
-    videos: string[],
+    content: string[],
     id: number
 }

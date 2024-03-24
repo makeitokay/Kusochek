@@ -13,10 +13,10 @@ const Story = ({story}: StoryProps) => {
     const currentStoryBlockID = useAppSelector(selectCurrentStoryBlockID)
     const {storyIDArray} = useAppSelector(selectStoryIDArray)
     const {stories: IDsByStoryBlock} = storyIDArray
-    const [videoUrl, setVideoUrl] = useState(story.videos[IDsByStoryBlock[story.id]])
+    const [videoUrl, setVideoUrl] = useState(story.content[IDsByStoryBlock[story.id]])
     const [onPause, setOnPause] = useState(false)
     useEffect(() => {
-        setVideoUrl(story.videos[IDsByStoryBlock[story.id]])
+        setVideoUrl(story.content[IDsByStoryBlock[story.id]])
     }, [IDsByStoryBlock[story.id]])
     useEffect(() => {
         if (currentStoryBlockID === story.id) {
@@ -27,7 +27,7 @@ const Story = ({story}: StoryProps) => {
     }, [currentStoryBlockID])
     return (
         <VideoPlayer
-            countVideos={story.videos.length}
+            countVideos={story.content.length}
             videoUrl={videoUrl}
             storyBlockID={story.id}
             onPause={onPause}

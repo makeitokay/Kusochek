@@ -14,6 +14,7 @@ interface FilterProps {
 }
 
 const Filter = ({changeArray}: FilterProps) => {
+    console.log("Рендер")
     const [searchParams, setSearchParams] = useSearchParams()
     const catalogQuery = searchParams.getAll('categories') || ""
     const [show, setShow] = useState(false);
@@ -26,9 +27,8 @@ const Filter = ({changeArray}: FilterProps) => {
     }[]>([])
 
     useEffect(() => {
-        getCategoriesRequest()
         setCategories(Object.keys(Category).map((category) => {
-            return {key: category, text: category, value: category}
+            return {key: category, text: Category[category as keyof typeof Category], value: category}
         }))
     }, [])
 
@@ -48,36 +48,33 @@ const Filter = ({changeArray}: FilterProps) => {
         formData.forEach((value, key) => {
             switch (key) {
                 case "query":
-                    if ( value.toString()){
+                    if (value.toString()) {
                         filterParams.query = value.toString()
                     }
                     break
                 case "maxPrice":
-                    if (Number(value) !== 0){
+                    if (Number(value) !== 0) {
                         filterParams.maxPrice = Number(value)
                     }
                     break
                 case "minPrice":
-                    if (Number(value) !== 0){
+                    if (Number(value) !== 0) {
                         filterParams.minPrice = Number(value)
                     }
                     break
                 case "maxWeight":
-                    if (Number(value) !== 0){
+                    if (Number(value) !== 0) {
                         filterParams.maxWeight = Number(value)
                     }
                     break
                 case "minWeight":
-                    if (Number(value) !== 0){
+                    if (Number(value) !== 0) {
                         filterParams.minWeight = Number(value)
                     }
                     break
             }
         });
-        if (currentCategory.length !== 0) {
-            filterParams.categories = currentCategory
-        }
-        getAllItemsRequest(filterParams).then((array)=>{
+        getAllItemsRequest(filterParams, undefined, currentCategory).then((array) => {
             changeArray(array)
         })
     }
@@ -103,7 +100,7 @@ const Filter = ({changeArray}: FilterProps) => {
                                 aria-describedby="basic-addon1"
                             />
                         </InputGroup>
-                        <Form.Group controlId="formPrice"  className="mb-3">
+                        <Form.Group controlId="formPrice" className="mb-3">
                             <Form.Label>Цена</Form.Label>
                             <div style={{display: "inline-flex"}}>
                                 <Form.Floating>
@@ -134,7 +131,7 @@ const Filter = ({changeArray}: FilterProps) => {
                                           changeFilterCategory(data.value as string[])}
                             />
                         </Form.Group>
-                        <Form.Group controlId="formWeight"  className="mb-3">
+                        <Form.Group controlId="formWeight" className="mb-3">
                             <Form.Label>Вес товара</Form.Label>
                             <div style={{display: "inline-flex"}}>
                                 <Form.Floating>

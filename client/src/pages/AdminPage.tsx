@@ -8,6 +8,7 @@ import {activateStory, addStoryRequest, addVideoStory} from "../HTTPRequests/adm
 import {getAllItemsRequest} from "../HTTPRequests/store/getItemsRequest";
 import {Item} from "../types/ItemCard";
 import {addPromotionRequest} from "../HTTPRequests/admin/addPromotionRequest";
+import {Category} from "../types/category";
 
 
 type Story = {
@@ -43,6 +44,12 @@ const AdminPage: React.FC = () => {
     });
     const [promotion, setPromotion] = useState({productId: 0, promotionPrice: 0, expirationDate: null})
     const [products, setProducts] = useState<Im[]>([])
+    const [categories, setCategories] = useState<{
+        key: string;
+        text: string;
+        value: string;
+    }[]>([])
+    const [currentCategory, setCurrentCategory] = useState<string>("")
     const notifyError = (message: string) => toast.error(message);
     const notifySuccess = (message: string) => toast.success(message);
     const isVideoFile = (file: any) => {
@@ -135,8 +142,7 @@ const AdminPage: React.FC = () => {
             for (let i of images) {
                 formData.append("images", i)
             }
-            console.log(images)
-            console.log(formData)
+            formData.append("category", currentCategory)
             addProductRequest(formData).then(() => notifySuccess("Товар добавлен")).catch(e => notifyError("Не удалоь добавить товар"))
             console.log('Product submitted:', product);
         } else {
@@ -144,6 +150,7 @@ const AdminPage: React.FC = () => {
             addPromotionRequest(formData)
         }
     };
+
     // Функция для получения текущей даты в московском часовом поясе в формате YYYY-MM-DD
     function getCurrentDateInMoscow() {
         // Создаем объект Date для текущего момента
@@ -166,6 +173,10 @@ const AdminPage: React.FC = () => {
         return `${year}-${month}-${day}`;
     }
 
+    const changeFilterCategory = (value: string) => {
+        setCurrentCategory(value)
+    }
+
     const currentDate = getCurrentDateInMoscow()
 
     useEffect(() => {
@@ -180,6 +191,9 @@ const AdminPage: React.FC = () => {
             })
             setProducts(array)
         }).catch((e) => console.log(e))
+        setCategories(Object.keys(Category).map((category) => {
+            return {key: category, text: Category[category as keyof typeof Category], value: category}
+        }))
     }, [])
     return (
         <Container>
@@ -231,12 +245,15 @@ const AdminPage: React.FC = () => {
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="productCategory">
                             <Form.Label>Категория</Form.Label>
-                            <Form.Control
-                                type="string"
-                                placeholder="Введите категорию"
-                                name="category"
-                                value={product.category}
-                                onChange={handleProductChange}
+                            <Dropdown className="dropdown_custom"
+                                      placeholder='Категория'
+                                      fluid
+                                      search
+                                      selection
+                                      options={categories}
+                                      value={currentCategory}
+                                      onChange={(e, data) =>
+                                          changeFilterCategory(data.value as string)}
                             />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="productDescription">
