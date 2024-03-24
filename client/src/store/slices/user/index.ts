@@ -13,7 +13,7 @@ const defaultState: userState = {
         lastName: "",
         email: "",
         mobilePhone: 0,
-        profilePicture: "",
+        profilePictureUrl: "",
         isAdmin: false
     }
 }

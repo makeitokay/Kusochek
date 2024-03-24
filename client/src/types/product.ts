@@ -10,6 +10,6 @@ export interface ProductCard{
     price: number,
     promotionPrice: number,
     category: string,
-    image: string,
+    imageUrl: string,
     averageMark: number
 }

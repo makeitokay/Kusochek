@@ -17,7 +17,7 @@ const ShopCard = ({item, className, classNameImg, route, ...props}: ShopCardProp
         <CustomLink to={route||""}  style={{textDecoration:"none"}}>
             <Card className={className} {...props}>
                 <div className={classNameImg}>
-                    <Card.Img src={item.image}/>
+                    <Card.Img src={item.imageUrl}/>
                 </div>
                 <Card.Body>
                     <Card.Title>{item.name}</Card.Title>

@@ -55,7 +55,7 @@ const UserProfile: React.FC = () => {
         <Container>
             <Row className="align-items-center my-3">
                 <Col xs={12} md={4} className="text-center">
-                    <Image src={user.profilePicture} roundedCircle
+                    <Image src={user.profilePictureUrl} roundedCircle
                            style={{width: "150px", height: "150px"}}/>
                 </Col>
                 <Col xs={12} md={4}>
