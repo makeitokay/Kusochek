@@ -23,7 +23,10 @@ import {infoUserRequest} from "./HTTPRequests/user/infoUserRequest";
 function App() {
     const dispatch = useAppDispatch()
     useEffect(() => {
-        infoUserRequest().then(user => dispatch(setUser(user)))
+        const isAuth = localStorage.getItem("isAuth")
+        if (isAuth) {
+            infoUserRequest().then(user => dispatch(setUser(user)))
+        }
     }, [])
     return (
         <div>

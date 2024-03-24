@@ -22,7 +22,7 @@ const RatingModule: React.FC = () => {
                     <Rating
                         rating={rating}
                         maxRating={5}
-                        onRate={(_, data) => setRating(data.rating as number)}
+                        onRate={(_:any, data: any) => setRating(data.rating as number)}
                     />
                 </div>
 

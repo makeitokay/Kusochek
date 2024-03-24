@@ -7,6 +7,7 @@ import 'semantic-ui-css/semantic.min.css'
 import {useSearchParams} from "react-router-dom";
 import {Filter as FilterObj} from "../../../types/filter";
 import {getAllItemsRequest} from "../../../HTTPRequests/store/getItemsRequest";
+import {getCategoriesRequest} from "../../../HTTPRequests/store/getCategoriesRequest";
 
 interface FilterProps {
     changeArray: (arg: string) => void; // Предположим, функция принимает строку и не возвращает результат
@@ -25,6 +26,7 @@ const Filter = ({changeArray}: FilterProps) => {
     }[]>([])
 
     useEffect(() => {
+        getCategoriesRequest()
         setCategories(Object.keys(Category).map((category) => {
             return {key: category, text: category, value: category}
         }))

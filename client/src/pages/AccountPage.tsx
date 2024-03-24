@@ -10,13 +10,15 @@ import {setLoading} from "../store/slices/appState";
 import m from "../images/snapedit_1707841598808.png"
 import {changePasswordRequest} from "../HTTPRequests/user/changePasswordRequest";
 import {toast} from "react-toastify";
+import OrderHistory from "../components/account/OrderHistory";
+
 const UserProfile: React.FC = () => {
     const user = useAppSelector(selectUser)
     const dispatch = useAppDispatch()
     // const [user, setUser] = useState<User>(user);
     const [password, setPassword] = useState("")
-    const notifyError = (message:string) => toast.error(message);
-    const notifySuccess = (message:string) => toast.success(message);
+    const notifyError = (message: string) => toast.error(message);
+    const notifySuccess = (message: string) => toast.success(message);
     const isImageFile = (file: any) => {
         // MIME типы для изображений начинаются с "image/"
         return file && file.type.startsWith('image/');
@@ -42,9 +44,9 @@ const UserProfile: React.FC = () => {
         }
     };
 
-    const handleChangePassword = (password:string) => {
+    const handleChangePassword = (password: string) => {
 
-        changePasswordRequest(password).then(()=> notifySuccess("Пароль изменен")).catch((e)=> notifyError("Не удалось изменить пароль"))
+        changePasswordRequest(password).then(() => notifySuccess("Пароль изменен")).catch((e) => notifyError("Не удалось изменить пароль"))
         // Пример вывода, в реалии здесь должно быть действие по смене пароля
         console.log(password);
     };
@@ -53,7 +55,8 @@ const UserProfile: React.FC = () => {
         <Container>
             <Row className="align-items-center my-3">
                 <Col xs={12} md={4} className="text-center">
-                    <Image src={'/images/snapedit_1707841598808.png'} roundedCircle style={{width: "150px", height: "150px"}}/>
+                    <Image src={'/images/snapedit_1707841598808.png'} roundedCircle
+                           style={{width: "150px", height: "150px"}}/>
                 </Col>
                 <Col xs={12} md={4}>
                     <h4>{user.firstName} {user.lastName}</h4>
@@ -62,6 +65,10 @@ const UserProfile: React.FC = () => {
                 <Col xs={12} md={4}>
                     <div style={{height: "130px"}}>
                         <Tabs defaultActiveKey="avatar" id="user-info-tabs" className="mb-3">
+                            <Tab eventKey="history" title="Заказы">
+                                <Form.Label>История заказов</Form.Label>
+                                <OrderHistory/>
+                            </Tab>
                             <Tab eventKey="password" title="Изменить пароль">
                                 <Form.Label>Выберите новый пароль</Form.Label>
                                 <EditableField label="Выберите новый пароль" initialValue={password}

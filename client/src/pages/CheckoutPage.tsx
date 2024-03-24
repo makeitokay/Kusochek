@@ -24,6 +24,7 @@ const CheckoutPage: React.FC = () => {
         deliveryDate: '',
         paymentMethod: 'card', // значение по умолчанию для способа оплаты
     });
+
     const notifyError = (message: string) => toast.error(message);
     const notifySuccess = (message: string) => toast.success(message);
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
