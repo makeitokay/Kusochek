@@ -9,6 +9,7 @@ import {getAllItemsRequest} from "../HTTPRequests/store/getItemsRequest";
 import {Item} from "../types/ItemCard";
 import {addPromotionRequest} from "../HTTPRequests/admin/addPromotionRequest";
 import {Category} from "../types/category";
+import SettingOrder from "../components/admin/SettingOrder";
 
 
 type Story = {
@@ -340,6 +341,11 @@ const AdminPage: React.FC = () => {
                         <Button variant="primary" type={"submit"} style={{background: "black", borderColor: "black"}}>
                             Добавить акцию
                         </Button>
+                    </Form>
+                </Tab>
+                <Tab eventKey="Order" title="Редактирование заказа">
+                    <Form onSubmit={handleSubmit}>
+                        <SettingOrder/>
                     </Form>
                 </Tab>
             </Tabs>
