@@ -43,10 +43,13 @@ public class ProductsController : ControllerBase
 			productsQueryable = productsQueryable.Where(p => p.Price <= getProductsDto.MaxPrice.Value);
 		if (getProductsDto.Categories is not null)
 		{
-			var categoriesArray = getProductsDto.Categories.Split(',');
+			var categoriesArray = getProductsDto
+				.Categories
+				.Split(',')
+				.Select(ParseCategory);
 			productsQueryable = productsQueryable
 				.Where(p => categoriesArray
-					.Any(category => category.ToLower() == p.Category.ToString().ToLower()));
+					.Any(category => category == p.Category));
 		}
 		if (getProductsDto.MinWeight is not null)
 			productsQueryable = productsQueryable.Where(p => p.Price >= getProductsDto.MinWeight.Value);
