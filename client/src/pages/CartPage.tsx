@@ -6,8 +6,11 @@ import {useNavigate} from "react-router-dom";
 import {getCartRequest} from "../HTTPRequests/cart/getCartRequest";
 import {deleteItemCartRequest} from "../HTTPRequests/cart/deleteItemCartRequest";
 import {toast} from "react-toastify";
+import {useAppDispatch, useAppSelector} from "../hooks/storeHooks";
+import {selectUser} from "../store/slices/user";
 
 const CartPage: React.FC = () => {
+    const user = useAppSelector(selectUser)
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
     const navigate = useNavigate()
     const notifyError = (message: string) => toast.error(message);
@@ -43,7 +46,7 @@ const CartPage: React.FC = () => {
                     cursor: "pointer",
                     transform: "translateX(23%)"
                 }}
-                src="https://sneg.top/uploads/posts/2023-06/1687931407_sneg-top-p-prikolnie-avatarki-dlya-malchikov-vkontakt-5.jpg"
+                src={user.profilePictureUrl}
                 roundedCircle
             />
             <h1>Корзина</h1>

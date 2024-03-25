@@ -335,7 +335,7 @@ const AdminPage: React.FC = () => {
                                 search
                                 selection
                                 options={products}
-                                onChange={(e, data) => changeDropdown(data)}
+                                onChange={(_, data) => changeDropdown(data)}
                             />
                         </Form.Group>
                         <Button variant="primary" type={"submit"} style={{background: "black", borderColor: "black"}}>
