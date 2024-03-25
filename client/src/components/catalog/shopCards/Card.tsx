@@ -35,7 +35,7 @@ const Card = () => {
                     setProduct(data)
                     setMainImage(data.images[0])
                     let array = []
-                    for (let i = 1; i < data.images.length; i++) {
+                    for (let i = 0; i < data.images.length; i++) {
                         array.push(data.images[i])
                     }
                     setOtherImages(array)

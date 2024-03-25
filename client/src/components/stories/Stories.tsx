@@ -17,11 +17,11 @@ const Stories = () => {
     const carouselRef = useRef<Carousel | null>(null);
     const [stories, setStories] = useState<StoryBlockType[]>([])
     const notifyError = (message: string) => toast.error(message);
-    useEffect(() => {
-        getStoriesRequest().then((data) => {
-            setStories(data)
-        }).catch(()=> notifyError("Не удалось получить истории"))
-    }, []);
+    // useEffect(() => {
+    //     getStoriesRequest().then((data) => {
+    //         setStories(data)
+    //     }).catch(()=> notifyError("Не удалось получить истории"))
+    // }, []);
     // const stories: StoryBlockType[] = [
     //     {
     //         preview: "https://images.hdqwalls.com/download/digital-rain-3840x2400.jpg",
@@ -89,8 +89,13 @@ const Stories = () => {
     };
 
     useEffect(() => {
-        dispatch(setNewStoriesArray(new Array(stories.length).fill(0)))
+        getStoriesRequest().then((data) => {
+            setStories(data)
+        }).catch(() => notifyError("Не удалось получить истории")).then(() => {
+            dispatch(setNewStoriesArray(new Array(stories.length).fill(0)))
+        })
     }, []);
+
     const responsive = {
         superLargeDesktop: {
             // the naming can be any, depends on you.
