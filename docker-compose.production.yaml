@@ -25,6 +25,7 @@ services:
     environment:
       - DOTNET_ENVIRONMENT=Production
       - KUSOCHEK_ConnectionStrings:Default=User ID=kusochek;Password=${POSTGRES_PASSWORD};Server=83.147.246.7;Port=5432;Database=Kusochek;Pooling=true;
+      - KUSOCHEK_VK:ServiceToken=${VK_SERVICE_TOKEN}
   kusochek_client:
     image: makeitokay/kusochek_client:latest
     restart: always
@@ -32,3 +33,4 @@ services:
       context: client
     environment:
       - REACT_APP_API_BASE_URL=https://api.kusochek.site
+      - REACT_APP_VK_AUTH_REDIRECT_URL=https://kusochek.site/vk-auth/success

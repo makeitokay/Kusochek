@@ -15,13 +15,16 @@ public class User : BaseEntity
 	public string Email { get; set; } = default!;
 
 	[Column("PasswordHash")]
-	public string PasswordHash { get; set; } = default!;
+	public string? PasswordHash { get; set; } = default!;
 
 	[Column("PasswordSalt")]
-	public byte[] PasswordSalt { get; set; } = default!;
+	public byte[]? PasswordSalt { get; set; } = default!;
 
 	[Column("MobilePhone")]
-	public string MobilePhone { get; set; } = default!;
+	public string? MobilePhone { get; set; }
+	
+	[Column("VkId")]
+	public long? VkId { get; set; }
 	
 	public virtual ICollection<ProductItem> CartItems { get; set; }
 	

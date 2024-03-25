@@ -11,6 +11,7 @@ import RedirectToShopItem from "./components/navigate/RedirectToShopItem";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegistrationPage";
 import AdminPage from "./pages/AdminPage";
+import VkAuthSuccessPage from "./pages/VkAuthSuccessPage";
 import {RequireAuth} from "./components/navigate/PrivateRoute";
 import CartPage from "./pages/CartPage";
 import CheckoutPage from "./pages/CheckoutPage";
@@ -53,6 +54,7 @@ function App() {
                     <Route path="shop" element={<ShopPage/>}/>
                     <Route path="shop/items/:id" element={<Card/>}></Route>
                     <Route path="shop/items/:id/:id2" element={<RedirectToShopItem/>}></Route>
+                    <Route path="vk-auth/success" element={<VkAuthSuccessPage/>}></Route>
                 </Route>
             </Routes>
             <Modal/>

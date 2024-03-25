@@ -341,23 +341,24 @@ namespace Infrastructure.Migrations
                         .HasColumnName("LastName");
 
                     b.Property<string>("MobilePhone")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("MobilePhone");
 
                     b.Property<string>("PasswordHash")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("PasswordHash");
 
                     b.Property<byte[]>("PasswordSalt")
-                        .IsRequired()
                         .HasColumnType("bytea")
                         .HasColumnName("PasswordSalt");
 
                     b.Property<int?>("ProfilePictureId")
                         .HasColumnType("integer")
                         .HasColumnName("ProfilePictureId");
+
+                    b.Property<long?>("VkId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("VkId");
 
                     b.HasKey("Id");
 

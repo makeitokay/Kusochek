@@ -45,10 +45,17 @@ services
 var connectionString = builder.Configuration.GetConnectionString("Default");
 services.AddDbContext(connectionString);
 
+services.Configure<VkOptions>(builder.Configuration.GetSection("VK"));
+
 services.AddRepositories();
 services.AddSingleton<IPasswordManager, PasswordManager>();
 services.AddSingleton<IStaticFileManager, StaticFileManager>(_ =>
 	new StaticFileManager(builder.Environment.IsProduction()));
+
+services.AddHttpClient("vk", c =>
+	c.BaseAddress = new Uri("https://api.vk.com"));
+
+services.AddTransient<IVkApiClient, VkApiClient>();
 
 var app = builder.Build();
 
