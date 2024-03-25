@@ -25,8 +25,9 @@ const Stories = () => {
     // const st: StoryBlockType[] = [
     //     {
     //         preview: "https://images.hdqwalls.com/download/digital-rain-3840x2400.jpg",
-    //         content: ["https://assets.mixkit.co/videos/preview/mixkit-waves-in-the-water-1164-large.mp4",
+    //         content: ["https://api.kusochek.site/static/777c6406-c477-43ad-b85f-337e44a22221.mp4",
     //             "https://assets.mixkit.co/videos/preview/mixkit-tree-with-yellow-flowers-1173-large.mp4"],
+    //         idStory: 0,
     //         id: 0
     //     },
     //     {
@@ -35,6 +36,7 @@ const Stories = () => {
     //             "https://assets.mixkit.co/videos/preview/mixkit-red-frog-on-a-log-1487-large.mp4",
     //             "https://assets.mixkit.co/videos/preview/mixkit-cold-looking-fashion-woman-in-a-winter-environment-39879-large.mp4"
     //         ],
+    //         idStory: 1,
     //         id: 1
     //     },
     //     {
@@ -42,6 +44,7 @@ const Stories = () => {
     //         content: ["https://assets.mixkit.co/videos/preview/mixkit-blogging-girl-down-the-street-with-his-cell-34487-large.mp4",
     //             "https://assets.mixkit.co/videos/preview/mixkit-behind-the-scenes-of-a-speaker-talking-on-camera-34486-large.mp4"
     //         ],
+    //         idStory: 2,
     //         id: 2
     //     },
     //     {
@@ -50,23 +53,27 @@ const Stories = () => {
     //             "https://assets.mixkit.co/videos/preview/mixkit-texture-of-a-leather-surface-close-view-34499-large.mp4",
     //             "https://assets.mixkit.co/videos/preview/mixkit-close-view-of-denim-fabric-texture-34500-large.mp4"
     //         ],
+    //         idStory: 3,
     //         id: 3
     //     },
     //     {
     //         preview: "https://fonoteka.top/uploads/posts/2022-02/1643966347_49-phonoteka-org-p-fon-dlya-noutbuka-minimalizm-53.jpg",
     //         content: ["https://assets.mixkit.co/videos/preview/mixkit-stacked-thin-strips-of-old-weathered-wood-34504-large.mp4"
     //         ],
+    //         idStory: 4,
     //         id: 4
     //     },
     //     {
     //         preview: "https://catherineasquithgallery.com/uploads/posts/2023-02/1676713533_catherineasquithgallery-com-p-risunki-na-zelenom-fone-181.jpg",
     //         content: ["https://assets.mixkit.co/videos/preview/mixkit-young-man-skating-in-a-parking-lot-34550-large.mp4"
     //         ],
+    //         idStory: 5,
     //         id: 5
     //     }, {
     //         preview: "https://gas-kvas.com/uploads/posts/2023-02/1675450281_gas-kvas-com-p-otobrazhaetsya-tolko-fonovii-risunok-20.jpg",
     //         content: ["https://assets.mixkit.co/videos/preview/mixkit-rolling-slowly-on-roller-skates-during-sunset-34547-large.mp4"
     //         ],
+    //         idStory: 6,
     //         id: 6
     //     }, {
     //         preview: "https://mykaleidoscope.ru/x/uploads/posts/2022-09/1663461655_18-mykaleidoscope-ru-p-otkritki-minimalizm-vkontakte-20.jpg",
@@ -77,6 +84,7 @@ const Stories = () => {
     //             "https://assets.mixkit.co/videos/preview/mixkit-a-seagull-and-a-boat-at-sea-in-slow-motion-1200-large.mp4",
     //             "https://assets.mixkit.co/videos/preview/mixkit-blurred-purple-lights-bokeh-1175-large.mp4"
     //         ],
+    //         idStory: 7,
     //         id: 7
     //     }
     // ]
@@ -89,8 +97,18 @@ const Stories = () => {
     };
 
     useEffect(() => {
+        // setStories(st)
+        let array: StoryBlockType[] = []
         getStoriesRequest().then((data) => {
-            setStories(data)
+            for (let i = 0; i < data.length; i++) {
+                array.push({
+                    preview: data[i].preview,
+                    content: data[i].content,
+                    idStory: data[i].id,
+                    id: i
+                })
+            }
+            setStories(array)
         }).catch(() => notifyError("Не удалось получить истории"))
     }, []);
     useEffect(() => {
@@ -124,7 +142,7 @@ const Stories = () => {
                     return <PreviewBlock blockAction={goToSlide} key={story.id} storyBlock={story}/>
                 })}
             </Carousel>
-            <StoryPlace carouselRef={carouselRef} stories={stories}/>
+            {stories.length > 0 ? <StoryPlace carouselRef={carouselRef} stories={stories}/> : <></>}
         </div>
     );
 };

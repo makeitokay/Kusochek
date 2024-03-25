@@ -59,7 +59,7 @@ const CategoryShopCards = ({category, nameCategory}: CategoryShopCardsProps) => 
     }
     return (
         <div style={{paddingBottom: "10vh"}}>
-            <CustomLink to={`/shop?${params.toString()}`} style={{border:0, margin:"1rem"}}>
+            <CustomLink to={`/shop?${params.toString()}`} style={{border:0, margin:"1rem",color:"black"}}>
                 <h2>{category}</h2>
             </CustomLink>
             <Carousel responsive={responsive}>

@@ -1,5 +1,6 @@
 export interface StoryBlockType {
     preview: string,
     content: string[],
-    id: number
+    idStory: number,
+    id: number,
 }
