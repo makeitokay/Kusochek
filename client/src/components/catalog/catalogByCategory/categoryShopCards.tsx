@@ -54,13 +54,13 @@ const CategoryShopCards = ({category, nameCategory}: CategoryShopCardsProps) => 
             items: 2
         }
     };
-    // if (items.length === 0) {
-    //     return <></>
-    // }
+    if (items.length === 0) {
+        return <></>
+    }
     return (
         <div style={{paddingBottom: "10vh"}}>
             <CustomLink to={`/shop?${params.toString()}`} style={{border:0, margin:"1rem"}}>
-                <h2>{nameCategory}</h2>
+                <h2>{category}</h2>
             </CustomLink>
             <Carousel responsive={responsive}>
                 {items.map(obj => (<ShopCard route ={`items/${obj.id}`} className="catalogCard" item={obj}/>))}
