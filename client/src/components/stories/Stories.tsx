@@ -22,7 +22,7 @@ const Stories = () => {
     //         setStories(data)
     //     }).catch(()=> notifyError("Не удалось получить истории"))
     // }, []);
-    // const stories: StoryBlockType[] = [
+    // const st: StoryBlockType[] = [
     //     {
     //         preview: "https://images.hdqwalls.com/download/digital-rain-3840x2400.jpg",
     //         content: ["https://assets.mixkit.co/videos/preview/mixkit-waves-in-the-water-1164-large.mp4",
@@ -91,10 +91,11 @@ const Stories = () => {
     useEffect(() => {
         getStoriesRequest().then((data) => {
             setStories(data)
-        }).catch(() => notifyError("Не удалось получить истории")).then(() => {
-            dispatch(setNewStoriesArray(new Array(stories.length).fill(0)))
-        })
+        }).catch(() => notifyError("Не удалось получить истории"))
     }, []);
+    useEffect(() => {
+        dispatch(setNewStoriesArray(new Array(stories.length).fill(0)))
+    }, [stories]);
 
     const responsive = {
         superLargeDesktop: {
