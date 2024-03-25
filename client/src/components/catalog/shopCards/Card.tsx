@@ -100,12 +100,31 @@ const Card = () => {
                                 }}>
                                     Стоимость продукта
                                 </div>
-                                <div style={{
-                                    fontSize: "24px",
-                                    lineHeight: "34px"
-                                }}>
-                                    {product?.price + " рублей"}
-                                </div>
+                                {product?.promotionPrice ?
+                                    <>
+                                        <div style={{
+                                            fontSize: "24px",
+                                            lineHeight: "34px"
+                                        }}>
+                                            {product.promotionPrice} рублей
+                                        </div>
+                                        <del>
+                                            {product.price}
+                                        </del>
+                                    </> :
+                                    <div style={{
+                                        fontSize: "24px",
+                                        lineHeight: "34px"
+                                    }}>
+                                        {product?.price} рублей
+                                    </div>}
+                                {/*<div style={{*/}
+                                {/*    fontSize: "24px",*/}
+                                {/*    lineHeight: "34px"*/}
+                                {/*}}>*/}
+
+                                {/*</div>*/}
+                                {/*{product?.promotionPrice? product?.price + " рублей нет": product?.price + " рублей"}*/}
                             </div>
                             <div className="containerSpecialButton" onClick={addItemCart}>
                                 <div className="bottom"></div>
