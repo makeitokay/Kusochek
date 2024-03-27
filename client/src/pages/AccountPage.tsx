@@ -11,6 +11,7 @@ import m from "../images/snapedit_1707841598808.png"
 import {changePasswordRequest} from "../HTTPRequests/user/changePasswordRequest";
 import {toast} from "react-toastify";
 import OrderHistory from "../components/account/OrderHistory";
+import {EventKey} from "@restart/ui/types";
 
 const UserProfile: React.FC = () => {
     const user = useAppSelector(selectUser)
@@ -19,6 +20,7 @@ const UserProfile: React.FC = () => {
     const [password, setPassword] = useState("")
     const notifyError = (message: string) => toast.error(message);
     const notifySuccess = (message: string) => toast.success(message);
+    const [activeKey, setActiveKey] = useState("avatar")
     const isImageFile = (file: any) => {
         // MIME типы для изображений начинаются с "image/"
         return file && file.type.startsWith('image/');
@@ -50,6 +52,20 @@ const UserProfile: React.FC = () => {
         // Пример вывода, в реалии здесь должно быть действие по смене пароля
         console.log(password);
     };
+    const handleSelect = (eventKey: any) => {
+        setActiveKey(eventKey)
+    }
+    const logOut = () => {
+        dispatch(setUser({
+            firstName: "",
+            lastName: "",
+            email: "",
+            mobilePhone: 0,
+            profilePictureUrl: "",
+            isAdmin: false
+        }))
+        localStorage.clear()
+    }
 
     return (
         <Container>
@@ -64,7 +80,8 @@ const UserProfile: React.FC = () => {
                 </Col>
                 <Col xs={12} md={4}>
                     <div style={{height: "130px"}}>
-                        <Tabs defaultActiveKey="avatar" id="user-info-tabs" className="mb-3">
+                        <Tabs defaultActiveKey="avatar" id="user-info-tabs" className="mb-3" onSelect={handleSelect}
+                              activeKey={activeKey}>
                             <Tab eventKey="history" title="Заказы">
                                 <Form.Label>История заказов</Form.Label>
                                 <OrderHistory/>
@@ -73,16 +90,9 @@ const UserProfile: React.FC = () => {
                                 <Form.Label>Выберите новый пароль</Form.Label>
                                 <EditableField label="Выберите новый пароль" initialValue={password}
                                                onSave={handleChangePassword}/>
-                                {/*<Form>*/}
-                                {/*    <Form.Group controlId="passwordChange">*/}
-                                {/*        <Form.Label>Новый пароль</Form.Label>*/}
-                                {/*        <Form.Control type="password" placeholder="Введите новый пароль" />*/}
-                                {/*    </Form.Group>*/}
-                                {/*    <Button variant="primary" onClick={handleChangePassword}>Сохранить пароль</Button>*/}
-                                {/*</Form>*/}
                             </Tab>
                             <Tab eventKey="avatar" title="Изменить аватар">
-                                <Form>
+                                <Form style={{paddingBottom: "1rem"}}>
                                     <Form.Group controlId="avatarChange">
                                         <Form.Label>Выберите новую аватарку</Form.Label>
                                         <Form.Control type="file" onChange={handleChangeAvatar}/>
@@ -90,6 +100,16 @@ const UserProfile: React.FC = () => {
                                 </Form>
                             </Tab>
                         </Tabs>
+                        {activeKey === "history" ?
+                            <></>
+                            :
+                            <div className="d-flex justify-content-end">
+                                <Button
+                                    style={{background: "black", borderColor: "black"}}
+                                    onClick={logOut}>
+                                    Выйти
+                                </Button>
+                            </div>}
                     </div>
                 </Col>
             </Row>

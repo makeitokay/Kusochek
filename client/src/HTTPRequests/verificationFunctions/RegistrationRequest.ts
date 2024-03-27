@@ -10,4 +10,5 @@ interface RegistrationRequestProps {
 
 export async function RegistrationRequest({email, firstName, lastName, mobilePhone, password}: RegistrationRequestProps) {
     const response = await $host.post("/auth/signup", {email, firstName, lastName, mobilePhone, password})
+    localStorage.setItem("token", response.data.accessToken)
 }

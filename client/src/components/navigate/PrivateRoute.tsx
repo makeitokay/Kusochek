@@ -44,6 +44,7 @@ export const RequireAuth: React.FC<RequireAuthProps> = ({children}) => {
             return false
         }
     }
+
     if (!isAuthenticated) {
         // Перенаправить на страницу входа, сохранив текущий путь в состоянии location
         return <Navigate to="/login" state={{from: location}} replace/>;

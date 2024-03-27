@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {ItemCard} from "../../../types/ItemCard";
-import {Col, Row} from "react-bootstrap";
+import {Button, Col, Modal, Row} from "react-bootstrap";
 import Image from 'react-bootstrap/Image';
 import "../../../styles/CardPageStyles.css"
 import InfoAboutProduct from "./InfoAboutProduct";
@@ -13,6 +13,11 @@ import {toast} from "react-toastify";
 import RatingCarousel from "./RatingCarousel";
 import {Rating} from "semantic-ui-react";
 import {addItemCartRequest} from "../../../HTTPRequests/cart/addItemCartRequest";
+import {deepEqual} from "../../../functions/CompareObjects";
+import {infoUserRequest} from "../../../HTTPRequests/user/infoUserRequest";
+import {setUser} from "../../../store/slices/user";
+import {setLoading} from "../../../store/slices/appState";
+import {getAllItemsRequest} from "../../../HTTPRequests/store/getItemsRequest";
 
 const Card = () => {
     var windowWidth = window.innerWidth;
@@ -28,6 +33,9 @@ const Card = () => {
     const [otherImages, setOtherImages] = useState<string[]>([])
     const {id} = useParams<string>()
     const [product, setProduct] = useState<ItemCard>()
+    const [showModal, setShowModal] = useState(false);
+
+    const navigate = useNavigate()
     useEffect(() => {
         if (id !== undefined) {
             getItemInfoRequest(id)
@@ -44,6 +52,10 @@ const Card = () => {
         }
     }, [id]);
 
+    function isAuth() {
+        return !!(localStorage.getItem("isAuth") === "true" && localStorage.getItem("token"));
+    }
+
     function chooseImage(e: any) {
         console.log(e.target.parentNode)
         for (let i of e.target.parentNode.parentNode.children) {
@@ -54,9 +66,22 @@ const Card = () => {
     }
 
     function addItemCart() {
-        if (id !== undefined) {
-            addItemCartRequest(id).then(() => notifySuccess("Товар добавлен")).catch(() => notifyError("Не удалось добавить товар"))
+        if (isAuth()) {
+            if (id !== undefined) {
+                addItemCartRequest(id).then(() => notifySuccess("Товар добавлен")).catch(() => notifyError("Не удалось добавить товар"))
+            }
+        } else {
+            setShowModal(true)
         }
+    }
+
+
+    const handleClose = () => setShowModal(false);
+    const redirectToLoginPage = () => {
+        navigate("/login")
+    }
+    const redirectToAuthPage = () => {
+        navigate("/reg")
     }
 
     return (
@@ -153,6 +178,23 @@ const Card = () => {
             <div style={{marginTop: "15vh"}}>
                 <Recommendation/>
             </div>
+            <Modal show={showModal} onHide={handleClose} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>Уведомление</Modal.Title>
+                </Modal.Header>
+                <Modal.Body style={{textAlign: "center"}}>
+                    <h3>Для добавления в корзину нужен аккаунт</h3>
+                </Modal.Body>
+
+                <Modal.Footer className="justify-content-between">
+                    <Button variant="secondary" onClick={redirectToLoginPage}>
+                        Авторизироваться
+                    </Button>
+                    <Button variant="secondary" onClick={redirectToAuthPage}>
+                        Зарегестрироваться
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </>
     );
 };

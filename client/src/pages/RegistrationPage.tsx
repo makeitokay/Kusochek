@@ -2,10 +2,18 @@ import React, {useState} from 'react';
 import {Form, Button, Container} from 'react-bootstrap';
 import {toast} from "react-toastify";
 import {RegistrationRequest} from "../HTTPRequests/verificationFunctions/RegistrationRequest";
+import {loginRequest} from "../HTTPRequests/verificationFunctions/LoginRequest";
+import {infoUserRequest} from "../HTTPRequests/user/infoUserRequest";
+import {setUser} from "../store/slices/user";
+import {setLoading} from "../store/slices/appState";
+import {useAppDispatch} from "../hooks/storeHooks";
+import {useNavigate} from "react-router-dom";
 
 const RegisterPage: React.FC = () => {
-    const notifyError = (message:string) => toast.error(message);
-    const notifySuccess = (message:string) => toast.success(message);
+    const notifyError = (message: string) => toast.error(message);
+    const notifySuccess = (message: string) => toast.success(message);
+    const dispatch = useAppDispatch()
+    const navigate = useNavigate()
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget as HTMLFormElement);
@@ -19,7 +27,17 @@ const RegisterPage: React.FC = () => {
             notifyError("Пароли не совпадают")
         } else {
             RegistrationRequest({email, firstName, lastName, mobilePhone, password})
-                .then(()=> notifySuccess("Зарегестрирован")).catch(()=> notifyError("Не удалось зарегестрироваться"))
+                .then(() => {
+                    localStorage.setItem("isAuth", "true")
+                    notifySuccess("Зарегестрирован")
+                    return infoUserRequest()
+                })
+                .then((user => {
+                    dispatch(setUser(user))
+                    dispatch(setLoading(false))
+                    localStorage.setItem("isAuth", "true")
+                    navigate("/")
+                })).catch(() => notifyError("Не удалось зарегестрироваться"))
         }
     };
     return (

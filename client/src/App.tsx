@@ -20,13 +20,17 @@ import OnlyUnregisteredRoute from "./components/navigate/onlyUnregisteredRoute";
 import {useAppDispatch} from "./hooks/storeHooks";
 import {setUser} from "./store/slices/user";
 import {infoUserRequest} from "./HTTPRequests/user/infoUserRequest";
+import {useNavigate} from "react-router-dom";
 
 function App() {
     const dispatch = useAppDispatch()
+    const navigate = useNavigate()
     useEffect(() => {
         const isAuth = localStorage.getItem("isAuth")
         if (isAuth) {
             infoUserRequest().then(user => dispatch(setUser(user)))
+        } else {
+            navigate("/login")
         }
     }, [])
     return (
@@ -43,7 +47,11 @@ function App() {
                         <RequireAuth>
                             <AdminPage/>
                         </RequireAuth>}/>
-                    <Route path="cart" element={<CartPage/>}/>
+                    <Route path="cart" element={
+                        <RequireAuth>
+                            <CartPage/>
+                        </RequireAuth>
+                    }/>
                     <Route path="checkout" element={<CheckoutPage/>}/>
                     <Route path="account" element={
                         <RequireAuth>
