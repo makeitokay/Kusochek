@@ -9,9 +9,10 @@ const RatingModule: React.FC = () => {
     const [comment, setComment] = useState<string>('');
     const id = useParams()
     const notifyError = (message: string) => toast.error(message);
+    const notify = (message: string) => toast.success(message);
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        setRatingRequest(id.id|| "0", rating, comment).catch(()=>notifyError("Не удалось отправить отзыв"))
+        setRatingRequest(id.id|| "0", rating, comment).catch(()=>notifyError("Не удалось отправить отзыв")).then(()=>notify("Отзыв отправлен"))
     };
 
     return (
