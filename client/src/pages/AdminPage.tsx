@@ -10,6 +10,7 @@ import {Item} from "../types/ItemCard";
 import {addPromotionRequest} from "../HTTPRequests/admin/addPromotionRequest";
 import {Category} from "../types/category";
 import SettingOrder from "../components/admin/SettingOrder";
+import {getItemInfoRequest} from "../HTTPRequests/store/getItemInfoRequest";
 
 
 type Story = {
@@ -43,6 +44,7 @@ const AdminPage: React.FC = () => {
         description: "",
         quantity: 0
     });
+    const [newProduct, setNewProduct] = useState({productId: 0, price: 0, quantity: 0, name:"", weight:0, category:"", description:""})
     const [promotion, setPromotion] = useState({productId: 0, promotionPrice: 0, expirationDate: ""})
     const [products, setProducts] = useState<Im[]>([])
     const [categories, setCategories] = useState<{
@@ -102,6 +104,15 @@ const AdminPage: React.FC = () => {
         const selectedKey = selectedOption ? selectedOption.key : undefined;
         setPromotion({...promotion, productId: Number(selectedKey)})
     }
+    const changeDropdownNew = (data: any) => {
+        const selectedOption = products.find(option => option.value === data.value);
+        const selectedKey = selectedOption ? selectedOption.key : undefined;
+        getItemInfoRequest(selectedKey || "").then((data) => {
+            console.log(data)
+            const {images,...newData} = data
+            setNewProduct({...newData})
+        }).catch(() => notifyError("Товар не получен"))
+    }
     const handleProductChange = (e: ChangeEvent<HTMLInputElement>) => {
         const {name, value, files} = e.target;
         if (files) {
@@ -116,6 +127,10 @@ const AdminPage: React.FC = () => {
         } else {
             setProduct({...product, [name]: value});
         }
+    };
+    const handleNewProductChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const {name, value} = e.target;
+        setNewProduct({...newProduct, [name]: value})
     };
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -151,10 +166,17 @@ const AdminPage: React.FC = () => {
                 formData.append("images", i)
             }
             formData.append("category", currentCategory)
-            addProductRequest(formData).then(() => notifySuccess("Товар добавлен")).catch(e => notifyError("Не удалоь добавить товар"))
+            addProductRequest(formData).then(() => notifySuccess("Товар добавлен")).catch(e => notifyError("Не удалось добавить товар"))
             console.log('Product submitted:', product);
         } else if (key === "promotion") {
             addPromotionRequest(promotion).then(() => notifySuccess("Акция добавлена")).catch(() => notifyError("Не удалось добавить акцию"))
+        } else if (key === "changeItem") {
+            const formData = new FormData(e.currentTarget as HTMLFormElement);
+            for (const key in newProduct){
+                // @ts-ignore
+                formData.append(key, newProduct[key])
+            }
+            addProductRequest(formData).then(() => notifySuccess("Товар обновлен")).catch(e => notifyError("Не удалось обновить товар"))
         }
     };
 
@@ -295,7 +317,7 @@ const AdminPage: React.FC = () => {
                         <Form.Group className="mb-3" controlId="productPrice">
                             <Form.Label>Цена</Form.Label>
                             <Form.Control
-                                type="text"
+                                type="number"
                                 placeholder="Введите цену"
                                 name="price"
                                 value={product.price}
@@ -304,6 +326,44 @@ const AdminPage: React.FC = () => {
                         </Form.Group>
                         <Button variant="primary" type={"submit"} style={{background: "black", borderColor: "black"}}>
                             Добавить продукт
+                        </Button>
+                    </Form>
+                </Tab>
+                <Tab eventKey="changeItem" title="Изменение продукта">
+                    <Form onSubmit={handleSubmit}>
+                        <Form.Group className="mb-3" controlId="obj">
+                            <Form.Label>Выбери продукт</Form.Label>
+                            <Dropdown
+                                placeholder='State'
+                                fluid
+                                search
+                                selection
+                                options={products}
+                                onChange={(_, data) => changeDropdownNew(data)}
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="productPrice">
+                            <Form.Label>Цена</Form.Label>
+                            <Form.Control
+                                type="number"
+                                placeholder="Введите цену"
+                                name="price"
+                                value={newProduct.price}
+                                onChange={handleNewProductChange}
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="productQuantity">
+                            <Form.Label>Количество</Form.Label>
+                            <Form.Control
+                                type="number"
+                                placeholder="Введите количество"
+                                name="quantity"
+                                value={newProduct.quantity}
+                                onChange={handleNewProductChange}
+                            />
+                        </Form.Group>
+                        <Button variant="primary" type={"submit"} style={{background: "black", borderColor: "black"}}>
+                            Изменить продукт
                         </Button>
                     </Form>
                 </Tab>
